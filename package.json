@@ -1,0 +1,41 @@
+{
+	"name": "cf-workers-orpc-template",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"deploy": "wrangler deploy",
+		"dev": "wrangler dev",
+		"start": "wrangler dev",
+		"test": "vitest",
+		"cf:typegen": "wrangler types",
+		"check": "biome check && tsc --noEmit",
+		"format": "biome format --write .",
+		"db:push": "drizzle-kit push",
+		"db:generate": "drizzle-kit generate",
+		"db:migrate:local": "pnpm dlx wrangler d1 migrations apply db --local",
+		"db:migrate:staging": "pnpm dlx wrangler d1 migrations apply db --remote",
+		"setup-local": "cp .dev.vars.example .dev.vars && pnpm db:migrate:local"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "^0.8.19",
+		"@cloudflare/workers-types": "^4.20250510.0",
+		"dotenv": "^16.5.0",
+		"drizzle-kit": "^0.31.1",
+		"typescript": "^5.5.2",
+		"vite-tsconfig-paths": "^5.1.4",
+		"vitest": "~3.0.7",
+		"wrangler": "^4.14.4"
+	},
+	"dependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@orpc/openapi": "^1.2.0",
+		"@orpc/server": "^1.2.0",
+		"@orpc/valibot": "^1.5.2",
+		"drizzle-orm": "^0.43.1",
+		"drizzle-toolbelt": "^1.2.0",
+		"drizzle-valibot": "^0.4.2",
+		"postgres": "^3.4.5",
+		"ulid-workers": "^2.1.0",
+		"valibot": "^1.1.0"
+	}
+}
