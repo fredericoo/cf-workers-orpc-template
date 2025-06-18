@@ -1,5 +1,5 @@
 import { type SQL, desc, eq, isNotNull, isNull } from 'drizzle-orm';
-import { takeFirst } from 'drizzle-toolbelt';
+import { takeFirstOrThrow } from 'drizzle-toolbelt';
 import * as v from 'valibot';
 import { todos, todosInsertSchema, todosSelectSchema, todosUpdateSchema } from '~/db/schema';
 import { publicProcedure } from '~/orpc/init';
@@ -45,7 +45,7 @@ export const todosRouter = {
 		})
 		.input(v.pick(todosInsertSchema, ['title']))
 		.output(todosSelectSchema)
-		.errors({ NOT_FOUND: { message: 'Todo not found' } })
+		.errors({ INTERNAL_SERVER_ERROR: { message: 'Failed to create todo' } })
 		.handler(async ({ context: { db }, input, errors }) => {
 			const created = await db
 				.insert(todos)
@@ -54,9 +54,8 @@ export const todosRouter = {
 					title: input.title,
 				})
 				.returning()
-				.then(takeFirst);
+				.then(takeFirstOrThrow(errors.INTERNAL_SERVER_ERROR()));
 
-			if (!created) throw errors.NOT_FOUND();
 			return created;
 		}),
 
@@ -83,8 +82,7 @@ export const todosRouter = {
 				.set(input.body)
 				.where(eq(todos.id, input.params.id))
 				.returning()
-				.then(takeFirst);
-			if (!updated) throw errors.NOT_FOUND();
+				.then(takeFirstOrThrow(errors.NOT_FOUND()));
 			return updated;
 		}),
 };
