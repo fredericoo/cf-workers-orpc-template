@@ -56,7 +56,7 @@ export const todosRouter = {
 				.returning()
 				.then(takeFirst);
 
-			if (!created) throw errors.NOT_FOUND;
+			if (!created) throw errors.NOT_FOUND();
 			return created;
 		}),
 
@@ -84,7 +84,7 @@ export const todosRouter = {
 				.where(eq(todos.id, input.params.id))
 				.returning()
 				.then(takeFirst);
-			if (!updated) throw errors.NOT_FOUND;
+			if (!updated) throw errors.NOT_FOUND();
 			return updated;
 		}),
 };
