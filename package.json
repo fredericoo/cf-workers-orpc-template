@@ -15,11 +15,12 @@
 		"db:generate": "drizzle-kit generate",
 		"db:migrate:local": "pnpm dlx wrangler d1 migrations apply db --local",
 		"db:migrate:staging": "pnpm dlx wrangler d1 migrations apply db --remote",
-		"setup-local": "cp .dev.vars.example .dev.vars && pnpm db:migrate:local && cf:typegen"
+		"setup-local": "cp .dev.vars.example .dev.vars && pnpm db:migrate:local && pnpm cf:typegen"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.8.19",
 		"@cloudflare/workers-types": "^4.20250510.0",
+		"@types/node": "^24.1.0",
 		"dotenv": "^16.5.0",
 		"drizzle-kit": "^0.31.1",
 		"typescript": "^5.5.2",
